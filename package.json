@@ -1,7 +1,11 @@
 {
   "name": "@yatori/koishi-plugin-isthattrue",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "通过 LLM 和联网搜索核验事实",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YasaitoriOvO/isthattrue.git"
+  },
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [

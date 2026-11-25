@@ -18,6 +18,12 @@ Koishi 4 插件，Node.js >= 22。@机器人后使用 `是真的吗`、`is that 
 
 `npm test` 运行离线测试；真实 API 联调需要自己的 LLM 与搜索密钥。
 
+## 发布到 npm
+
+在 npm 包设置的 **Trusted publishing** 添加 GitHub Actions，Owner 填 `YasaitoriOvO`，Repository 填 `isthattrue`，Workflow filename 填 `publish.yml`，Environment 留空，并允许 `npm publish`。[npm Trusted Publishing 文档](https://docs.npmjs.com/trusted-publishers/)
+
+更新并提交版本号后，推送对应的 Git 标签，例如 `v0.1.5`，或在 GitHub Actions 手动运行 **Publish to npm**。工作流会安装依赖、运行测试和构建，然后发布到 npm。
+
 ## 调试日志
 
 控制台开启 `debug`（默认关闭）后，在 `isthattrue` 日志中查看请求编号、搜索提供商及结果数量、LLM 轮次及工具调用数、HTTP 状态与耗时、替换情况及发送长度。使用 info 级别输出带 `[debug]` 标记的日志，无须调整全局日志级别。不记录正常请求的正文或完整回复。
@@ -32,7 +38,7 @@ Koishi 4 插件，Node.js >= 22。@机器人后使用 `是真的吗`、`is that 
 | --- | --- | --- |
 | triggers | 是真的吗 / is that true / 核验事实 / 求真 | 触发词列表，普通文本匹配；空列表不触发 |
 | requireMention | true | 是否必须 @当前机器人 |
-| useQuote | true | 正文为空时使用引用消息 |
+| useQuote | true | 使用引用消息里的文本、图片或合并聊天记录 |
 | progressMessage | 核查中 | 开始提示，空字符串关闭 |
 | errorMessage | 核验失败，请稍后重试或联系管理员检查 API 配置。 | 失败提示，空字符串关闭，仍记录错误 |
 | responseStyle | detailed | detailed 约 500–900 字；brief 约 150–300 字，由模型尽量遵循 |
@@ -44,6 +50,12 @@ Koishi 4 插件，Node.js >= 22。@机器人后使用 `是真的吗`、`is that 
 | replacement | * | 单个敏感词替换字符 |
 
 提示语和模型回复都会经过敏感词过滤。提高搜索轮数和输出长度可能增加费用与耗时，必要时同步调整 timeout。
+
+## 合并聊天记录核查
+
+在发送 `@机器人 求真` 时附上合并转发，或引用合并转发后发送这条指令。适配器提供已展开的记录时，插件会按顺序将各条消息的完整正文交给模型，并保留消息分隔和可用的发言者昵称。可以在触发词后补充想核查的问题。模型根据整段记录拟定搜索词，再调用搜索核验。
+
+聊天记录和补充问题合计受 `maxInputLength` 限制，超过上限时提示缩短内容。记录中的图片仍按图片核查配置处理。
 
 ## 图片核查
 
