@@ -1,0 +1,30 @@
+{
+  "name": "@yatori/koishi-plugin-isthattrue",
+  "version": "0.1.4",
+  "description": "通过 LLM 和联网搜索核验事实",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "npm run build && node --test test/*.cjs"
+  },
+  "peerDependencies": {
+    "koishi": "^4.17.9"
+  },
+  "dependencies": {
+    "@q78kg/mint-filter": "1.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "koishi": "^4.17.9",
+    "typescript": "^5.5.3"
+  },
+  "koishi": {
+    "description": {
+      "zh": "@机器人进行联网事实核查，替换敏感词后回复"
+    }
+  }
+}
